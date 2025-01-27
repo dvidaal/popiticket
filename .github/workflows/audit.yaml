@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: ⬇ Git checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: ❓ Check if .editorconfig exists
         uses: andstor/file-existence-action@v1
@@ -28,8 +28,11 @@ jobs:
       - name: 💾 Install modules
         run: npm ci
 
-      - name: 🔍 ESLint validation
-        run: npx eslint --ignore-path .gitignore . --max-warnings 0
+      - name: 🔍 Find and run ESLint
+        run: |
+          CONFIG_PATH=$(find . -name "eslint.config.js" | head -n 1)
+          CONFIG_DIR=$(dirname "$CONFIG_PATH")
+          npx eslint "$CONFIG_DIR" --config "$CONFIG_PATH" --max-warnings 0
 
       - name: 📏 Check commit message length
         uses: gsactions/commit-message-checker@v1
