@@ -10,6 +10,33 @@ jobs:
     steps:
       - name: ⬇ Git checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Debug repository structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Repository contents:"
+          ls -la
+          echo "Git directory contents:"
+          ls -la .git || echo ".git directory not found"
+
+      - name: 💾 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: 💾 Install dependencies
+        run: npm ci
+
+      - name: 💾 Install and setup Husky
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          npm install husky --save-dev
+          npm run prepare
+
+      - name: 🔍 Run ESLint
+        run: npx eslint . --max-warnings 0
 
       - name: ❓ Check if .editorconfig exists
         uses: andstor/file-existence-action@v1
@@ -25,20 +52,11 @@ jobs:
         with:
           must_deny: "node_modules"
 
-      - name: 💾 Install Husky
-        run: |
-          cd /home/runner/work/popiticket/popiticket
-          npx husky install
-
-      - name: 🔍 Find and run ESLint
-        working-directory: ./frontend
-        run: npx eslint --max-warnings 0
-
       - name: 📏 Check commit message length
         uses: gsactions/commit-message-checker@v1
         with:
           pattern: "^[^#].{10,74}"
           error: "The commit message length must be between 10 and 74"
-          excludeDescription: "true" # optional: this excludes the description body of a pull request
-          excludeTitle: "true" # optional: this excludes the title of a pull request
-          checkAllCommitMessages: "true" # optional: this checks all commits associated with a pull request
+          excludeDescription: "true"
+          excludeTitle: "true"
+          checkAllCommitMessages: "true"
