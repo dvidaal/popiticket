@@ -25,8 +25,10 @@ jobs:
         with:
           must_deny: "node_modules"
 
-      - name: 💾 Install modules
-        run: npm ci
+      - name: 💾 Install Husky
+        run: |
+          cd /home/runner/work/popiticket/popiticket
+          npx husky install
 
       - name: 🔍 Find and run ESLint
         working-directory: ./frontend

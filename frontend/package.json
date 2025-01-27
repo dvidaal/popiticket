@@ -9,6 +9,9 @@
     "lint": "next lint",
     "prepare": "husky install"
   },
+  "eslintConfig": {
+    "extends": "../../eslint.config.js"
+  },
   "dependencies": {
     "next": "15.1.5",
     "react": "^19.0.0",

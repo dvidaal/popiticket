@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Best application to buy tickets for your favorite movies",
   "main": "index.js",
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
