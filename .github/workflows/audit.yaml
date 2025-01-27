@@ -29,10 +29,8 @@ jobs:
         run: npm ci
 
       - name: 🔍 Find and run ESLint
-        run: |
-          CONFIG_PATH=$(find . -name "eslint.config.js" | head -n 1)
-          CONFIG_DIR=$(dirname "$CONFIG_PATH")
-          npx eslint "$CONFIG_DIR" --config "$CONFIG_PATH" --max-warnings 0
+        working-directory: ./frontend
+        run: npx eslint --max-warnings 0
 
       - name: 📏 Check commit message length
         uses: gsactions/commit-message-checker@v1
