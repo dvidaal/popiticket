@@ -3,14 +3,28 @@
   "version": "1.0.0",
   "description": "Best application to buy tickets for your favorite movies",
   "main": "index.js",
+  "type": "module",
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+<<<<<<< Updated upstream
+    "prepare": "husky install"
+=======
+    "prepare": "husky && husky install"
+>>>>>>> Stashed changes
   },
   "author": "popiticket team ❤️",
   "license": "ISC",
   "devDependencies": {
+<<<<<<< Updated upstream
+    "@eslint/eslintrc": "^3.2.0",
+    "eslint": "^9.19.0",
     "husky": "^9.1.7",
+=======
+    "husky": "^8.0.0",
+>>>>>>> Stashed changes
     "lint-staged": "^15.4.1",
     "prettier": "^3.4.2"
   }

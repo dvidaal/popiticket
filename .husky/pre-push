@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 local_branch_name="$(git rev-parse --abbrev-ref HEAD)"
 
 valid_branch_regex='^((hotfix|bugfix|feature)\/[a-zA-Z0-9\-]+)$'

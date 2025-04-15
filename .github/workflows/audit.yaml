@@ -1,0 +1,61 @@
+name: Code audit
+
+on: push
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    name: Code audit
+
+    steps:
+      - name: ⬇ Git checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 🔍 Debug repository structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Repository contents:"
+          ls -la
+
+      - name: 💾 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: 💾 Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: 🔧 Setup Husky
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          npx husky init
+          npx husky add .husky/pre-commit "npm run lint-staged"
+
+      - name: 🔍 Run ESLint
+        run: npx eslint . --max-warnings 0
+
+      - name: ❓ Check if .editorconfig exists
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ".editorconfig"
+          allow_failure: true
+
+      - name: ✅ EditorConfig validation
+        uses: snow-actions/eclint@v1.0.1
+
+      - name: 🙈 Ensure node_modules is ignored by Git
+        uses: dkershner6/gitignore-parser@v1
+        with:
+          must_deny: "node_modules"
+
+      - name: 📏 Check commit message length
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: "^[^#].{10,74}"
+          error: "The commit message length must be between 10 and 74"
+          excludeDescription: "true"
+          excludeTitle: "true"
+          checkAllCommitMessages: "true"
